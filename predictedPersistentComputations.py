@@ -1,4 +1,5 @@
 from collections import Counter
+from functools import reduce
 from math import floor, ceil
 def PHCycle(n, k): # Gives the k-dimensional persistent homology of C_n
 	if k == 0:
@@ -32,11 +33,21 @@ def product(ph1, ph2, k): #ph1 and ph2 should be functions that take in K and gi
 				ans[torOperation(key1, key2)] += value1*value2	
 	return ans
 def productAll(ph1, ph2):
-	return lambda k : PHCycle(n, k)
+	return lambda k : product(ph1, ph2, k)
 def stripEphemerals(counter):
 	for key, val in counter.items():
-		if val[0]==val[1]:
-			del counter[key]
-print(PHCycle(8, 1))
-print(product(PHCycleAll(7),PHCycleAll(4),1))
-print(product(PHCycleAll(7),PHCycleAll(8),1))
+		if key[0]==key[1]:
+			counter[key] = 0
+def predictedPersistentOfProduct(cycleSizeList, homologyDim):
+	PHCycleFuncs = map(PHCycleAll, cycleSizeList)
+	productFunc = reduce(productAll, PHCycleFuncs)
+	return productFunc(homologyDim)
+cycleList = []
+newVal = None
+while newVal != 'q':
+	newVal = input("Type a cycle size that you'd like to include in your product, or q to be done. ")
+	if newVal != 'q':
+		cycleList.append(int(newVal))
+dim = int(input('What dimension would you like to take the topology in? '))
+print("With ephemerals stripped, the persistent homology is: " + str(stripEphemerals(predictedPersistentOfProduct(cycleList, dim))))
+print("Without ephemerals stripped, the persistent homology is: " + str(predictedPersistentOfProduct(cycleList, dim)))
