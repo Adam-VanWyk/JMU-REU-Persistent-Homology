@@ -1,3 +1,4 @@
+from functools import reduce
 import numpy as np
 def cycleDist(i,j,n): return min((i-j)%n,(j-i)%n) # Distance between points i and j in a cycle of size n
 def cycleMatrix(n): return np.array([[cycleDist(i,j,n) for i in range(n)] for j in range(n)]) # Distance matrix for the cycle graph of size n
@@ -6,4 +7,5 @@ def plot(n): return ripser(prism(cycleMatrix(n)), distance_matrix=True)['dgms'] 
 def saveCSV(M, name="out.csv"): np.savetxt(name, M, delimiter=",") #saves an adjacency matrix as a CSV
 def product(M, N): # computes the distance matrix of the product of two matrix spaces using the sum metric
 	return np.block([[M + n for n in column] for column in N])
-saveCSV(product(cycleMatrix(3),cycleMatrix(2)))
+def cyclePower(n,k): return functools.reduce(product, [cycleMatrix(n) for _ in range(k)] )#returns C_n^k
+saveCSV(product(cycleMatrix(7),cycleMatrix(8)))
