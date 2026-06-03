@@ -35,9 +35,7 @@ def product(ph1, ph2, k): #ph1 and ph2 should be functions that take in K and gi
 def productAll(ph1, ph2):
 	return lambda k : product(ph1, ph2, k)
 def stripEphemerals(counter):
-	for key, val in counter.items():
-		if key[0]==key[1]:
-			counter[key] = 0
+	return {k: v for k, v in counter.items() if k[0] != k[1]}	
 def predictedPersistentOfProduct(cycleSizeList, homologyDim):
 	PHCycleFuncs = map(PHCycleAll, cycleSizeList)
 	productFunc = reduce(productAll, PHCycleFuncs)
@@ -50,4 +48,4 @@ while newVal != 'q':
 		cycleList.append(int(newVal))
 dim = int(input('What dimension would you like to take the topology in? '))
 print("With ephemerals stripped, the persistent homology is: " + str(stripEphemerals(predictedPersistentOfProduct(cycleList, dim))))
-print("Without ephemerals stripped, the persistent homology is: " + str(predictedPersistentOfProduct(cycleList, dim)))
+print("Without ephemerals stripped, the persistent homology is: " + str(dict(predictedPersistentOfProduct(cycleList, dim))))
