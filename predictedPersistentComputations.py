@@ -46,8 +46,8 @@ while newVal != 'q':
 	newVal = input("Type a cycle size that you'd like to include in your product, or q to be done. ")
 	if newVal != 'q':
 		cycleList.append(int(newVal))
-dimMin = int(input('What minimum dimension would you like to take the topology in? '))
-dimMax = int(input('What maximum dimension would you like to take the topology in? '))
+dimMin = int(input('What minimum dimension would you like to take the persistent homology in? '))
+dimMax = int(input('What maximum dimension would you like to take the persistent homology in? '))
 for dim in range(dimMin, dimMax + 1):
 	print("\nDimension "+str(dim)+":") 
 	print("With ephemerals stripped, the persistent homology is: " + str(dict(sorted(stripEphemerals(predictedPersistentOfProduct(cycleList, dim)).items()))))

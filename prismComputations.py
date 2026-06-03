@@ -7,5 +7,12 @@ def plot(n): return ripser(prism(cycleMatrix(n)), distance_matrix=True)['dgms'] 
 def saveCSV(M, name="out.csv"): np.savetxt(name, M, delimiter=",") #saves an adjacency matrix as a CSV
 def product(M, N): # computes the distance matrix of the product of two matrix spaces using the sum metric
 	return np.block([[M + n for n in column] for column in N])
-def cyclePower(n,k): return functools.reduce(product, [cycleMatrix(n) for _ in range(k)] )#returns C_n^k
-saveCSV(product(cycleMatrix(7),cycleMatrix(8)))
+def cyclePower(n,k): return reduce(product, [cycleMatrix(n) for _ in range(k)] )#returns C_n^k
+cycleList = []
+newVal = None
+while newVal != 'q':
+	newVal = input("Type a cycle size that you'd like to include in your product, or q to be done. ")
+	if newVal != 'q':
+		cycleList.append(int(newVal))
+filename = input("What filename do you want? (If you don't enter one, it'll default to out.csv) ").strip() or "out.csv"
+saveCSV(reduce(product, map(cycleMatrix, cycleList)), name=filename)
