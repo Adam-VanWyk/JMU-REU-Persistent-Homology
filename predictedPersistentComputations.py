@@ -6,7 +6,7 @@ def PHCycle(n, k): # Gives the k-dimensional persistent homology of C_n
 		return Counter({(0, 1) : n - 1, (0, float('inf')): 1})
 	if k % 2 == 0:
 		if n % (k + 1) == 0 and n != k + 1:
-			return Counter({(k * n / (2 * (k + 1)), k * n / (2 * (k + 1)) + 1) : int(n / (k + 1) - 1)})
+			return Counter({(int(k * n / (2 * (k + 1))), int(k * n / (2 * (k + 1)) + 1)) : int(n / (k + 1) - 1)})
 		else:
 			return Counter() 
 	else:
@@ -50,5 +50,5 @@ dimMin = int(input('What minimum dimension would you like to take the topology i
 dimMax = int(input('What maximum dimension would you like to take the topology in? '))
 for dim in range(dimMin, dimMax + 1):
 	print("\nDimension "+str(dim)+":") 
-	print("With ephemerals stripped, the persistent homology is: " + str(stripEphemerals(predictedPersistentOfProduct(cycleList, dim))))
-	print("Without ephemerals stripped, the persistent homology is: " + str(dict(predictedPersistentOfProduct(cycleList, dim))))
+	print("With ephemerals stripped, the persistent homology is: " + str(dict(sorted(stripEphemerals(predictedPersistentOfProduct(cycleList, dim)).items()))))
+	print("Without ephemerals stripped, the persistent homology is: " + str(dict(sorted(dict(predictedPersistentOfProduct(cycleList, dim)).items()))))
