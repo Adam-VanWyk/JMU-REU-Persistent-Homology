@@ -7,6 +7,8 @@ def plot(n): return ripser(prism(cycleMatrix(n)), distance_matrix=True)['dgms'] 
 def saveCSV(M, name="out.csv"): np.savetxt(name, M, delimiter=",") #saves an adjacency matrix as a CSV
 def product(M, N): # computes the distance matrix of the product of two matrix spaces using the sum metric
 	return np.block([[M + n for n in column] for column in N])
+def maxProduct(M, N): # computes the distance matrix using the max matric rather than the sum metric
+	return np.block([[np.maximum(M,n)  for n in column] for column in N])
 def cyclePower(n,k): return reduce(product, [cycleMatrix(n) for _ in range(k)] )#returns C_n^k
 cycleList = []
 newVal = None
@@ -14,5 +16,6 @@ while newVal != 'q':
 	newVal = input("Type a cycle size that you'd like to include in your product, or q to be done. ")
 	if newVal != 'q':
 		cycleList.append(int(newVal))
+useMax = (input("Type m if you'd like to use the maximum metric and anything else if you'd like to use the sum metric. ").strip() == "m")
 filename = input("What filename do you want? (If you don't enter one, it'll default to out.csv) ").strip() or "out.csv"
-saveCSV(reduce(product, map(cycleMatrix, cycleList)), name=filename)
+saveCSV(reduce((maxProduct if useMax else product), map(cycleMatrix, cycleList)), name=filename)
