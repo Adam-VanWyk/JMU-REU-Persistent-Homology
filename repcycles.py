@@ -31,7 +31,8 @@ def predictedFiltration(n,m):
 def drawSimplex(simplex, n, m): #takes a simplex as an iterable of vertices and draws it
 	for j in range(m):
 		print(''.join(["#" if (i,j) in simplex else "." for i in range(n)]))
-a,b=4,44,44,44
+a = int(input("What is the first cycle graph dimension you want?"))
+b = int(input("What is the second cycle graph dimension you want?"))
 f=predictedFiltration(a,b)
 f.sort()
 """m = d.homology_persistence(f, prime=2)
@@ -44,14 +45,14 @@ m = d.homology_persistence(f, prime=2)
 dgms = d.init_diagrams(m,f)
 
 dim = 2     # dimension of the diagram we want
-idx = 1     # index of the point we want
-pt = dgms[dim][idx]
-
-x = m.pair(pt.data)
-for sei in m[x]:
-    s = f[sei.index]    # simplex
-    vertices = [convertIntToCoord(x, [a,b]) for x in s]
-    #print('#',s)
-    #print(vertices)
-    drawSimplex(vertices, a, b)
-    print()
+for pt in dgms[dim]:
+	print("----------------------------------------------------------------")
+	print(pt)
+	x = m.pair(pt.data)
+	for sei in m[x]:
+	    s = f[sei.index]    # simplex
+	    vertices = [convertIntToCoord(x, [a,b]) for x in s]
+	    #print('#',s)
+	    #print(vertices)
+	    drawSimplex(vertices, a, b)
+	    print()
