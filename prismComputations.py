@@ -9,6 +9,8 @@ def product(M, N): # computes the distance matrix of the product of two matrix s
 	return np.block([[M + n for n in column] for column in N])
 def maxProduct(M, N): # computes the distance matrix using the max matric rather than the sum metric
 	return np.block([[np.maximum(M,n)  for n in column] for column in N])
+def minProduct(M, N): # computes the distance matrix using the min distance (which notably isn't a metric rather than the sum metric
+	return np.block([[np.minimum(M,n)  for n in column] for column in N])
 def cyclePower(n,k): return reduce(product, [cycleMatrix(n) for _ in range(k)] )#returns C_n^k
 if __name__ == "__main__":
 	cycleList = []
@@ -17,6 +19,13 @@ if __name__ == "__main__":
 		newVal = input("Type a cycle size that you'd like to include in your product, or q to be done. ")
 		if newVal != 'q':
 			cycleList.append(int(newVal))
-	useMax = (input("Type m if you'd like to use the maximum metric and anything else if you'd like to use the sum metric. ").strip() == "m")
+	metricToUseInput = input("Type max if you'd like to use the maximum metric, min if you'd like to use the min metric, and anything else if you'd like to use the sum metric. ").strip()
+	match metricToUseInput:
+		case "min":
+			metricToUse = minProduct
+		case "max":
+			metricToUse = maxProduct
+		case _:
+			metricToUse = product
 	filename = input("What filename do you want? (If you don't enter one, it'll default to out.csv) ").strip() or "out.csv"
-	saveCSV(reduce((maxProduct if useMax else product), map(cycleMatrix, cycleList)), name=filename)
+	saveCSV(reduce(metricToUse, map(cycleMatrix, cycleList)), name=filename)
